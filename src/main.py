@@ -1,6 +1,8 @@
 from utils.db import get_connection
 from utils.uuid import generate_uuid
 
+from config import ORG_NAME, ORG_DOMAIN, TOTAL_USERS
+
 from generators.users import generate_users
 from generators.teams import generate_teams
 from generators.team_memberships import generate_team_memberships
@@ -16,9 +18,6 @@ def main():
     conn = get_connection()
     cursor = conn.cursor()
 
-    # --------------------------------------------------
-    # Organization
-    # --------------------------------------------------
     organization_id = generate_uuid()
     cursor.execute("""
         INSERT INTO organizations (
@@ -26,16 +25,13 @@ def main():
         ) VALUES (?, ?, ?, datetime('now'))
     """, (
         organization_id,
-        "Demo SaaS Company",
-        "company.com"
+        ORG_NAME,
+        ORG_DOMAIN
     ))
     conn.commit()
 
-    # --------------------------------------------------
-    # Data generation pipeline
-    # --------------------------------------------------
     print("Generating users...")
-    users = generate_users(conn, organization_id)
+    users = generate_users(conn, organization_id, TOTAL_USERS)
 
     print("Generating teams...")
     teams = generate_teams(conn, organization_id)
@@ -61,7 +57,6 @@ def main():
     print("Generating tags...")
     generate_tags(conn)
 
-    print("Phase-3 COMPLETED successfully 🎉")
     conn.close()
 
 

@@ -78,6 +78,53 @@ You can configure the simulation by creating a `.env` file in the project root. 
 
 ---
 
+## ✅ Requirements / Notes
+
+- **No API keys are required.**
+- Uses **SQLite** for local storage (single file DB).
+- Configuration is read from `.env` using `python-dotenv`.
+
+## 📦 Dependencies
+
+Install all dependencies via:
+
+```bash
+pip install -r requirements.txt
+```
+
+> Note: the project imports `dotenv` (`python-dotenv`). Ensure `python-dotenv` is listed in `requirements.txt`.
+
+## 🔄 Reset / Regenerate Database
+
+If you want to generate from scratch:
+
+```bash
+rm -f output/asana_simulation.sqlite
+python src/createDb.py
+python src/main.py
+```
+
+## 🧰 Troubleshooting
+
+### `Database schema not found ... Run: python src/createDb.py`
+Run schema initialization first:
+
+```bash
+python src/createDb.py
+```
+
+### `UNIQUE constraint failed: users.email`
+This happens if you run generation multiple times into the same DB. Reset the DB:
+
+```bash
+rm -f output/asana_simulation.sqlite
+python src/createDb.py
+python src/main.py
+```
+
+### GitHub push fails due to large `output/asana_simulation.sqlite`
+The SQLite DB is generated output and should **not** be committed. It’s already ignored by `.gitignore` (`output/`), but if it was committed previously you must remove it from git history (see `git filter-repo`) or re-init the repo.
+
 ## 🧱 Project Structure
 
 ```

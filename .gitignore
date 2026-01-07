@@ -1,13 +1,10 @@
 # Generated output
-# This will ignore the entire output directory, including the SQLite database.
 output/
 
 # Environment variables
-# Do not commit secrets or local configuration.
 .env
 
 # Virtual Environment
-# Ignore the virtual environment directory.
 venv/
 .venv/
 env/
